@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <title>Clipboard Copy Test</title>
+</head>
+<body>
+  <button id="shareButton" type="button">URL 복사</button>
+
+  <script>
+    /**
+     * 클립보드에 텍스트 복사
+     * - 우선: Clipboard API (HTTPS 환경)
+     * - 대체: execCommand (구형 브라우저/HTTP 환경)
+     * @param {string} text - 복사할 텍스트
+     * @returns {Promise<boolean>} 성공 여부
+     */
+    async function copyToClipboard(text) {
+      // Modern Clipboard API (HTTPS 환경)
+      if (navigator.clipboard?.writeText && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch (err) {
+          console.warn("Clipboard API 실패, fallback 시도:", err);
+        }
+      }
+
+      // Fallback (구형 브라우저 또는 HTTP 환경)
+      return fallbackCopyToClipboard(text);
+    }
+
+    function fallbackCopyToClipboard(text) {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.readOnly = true;
+      textarea.setAttribute("aria-hidden", "true");
+      textarea.tabIndex = -1;
+
+      // 화면 밖으로 완전히 이동 (모바일 Safari 대응)
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      textarea.style.top = "0";
+
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+
+      // iOS Safari 등에서 select()만으로 부족한 경우 보완
+      try {
+        textarea.setSelectionRange(0, text.length);
+      } catch (e) {}
+
+      let success = false;
+      try {
+        success = document.execCommand("copy");
+      } catch (e) {
+        console.warn("execCommand 실패:", e);
+      } finally {
+        document.body.removeChild(textarea);
+      }
+
+      return success;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const shareBtn = document.getElementById("shareButton");
+
+      shareBtn?.addEventListener("click", async () => {
+        const url = window.location.href;
+        const copied = await copyToClipboard(url);
+        alert(copied ? "URL이 클립보드에 복사되었습니다." : "복사에 실패했습니다.");
+      });
+    });
+  </script>
+</body>
+</html>
