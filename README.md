@@ -1,6 +1,6 @@
 # Clipboard Copy
 
-<br />
+<br>
 
 현재 URL을 클립보드에 복사하는 기능을 구현한 프로젝트입니다.
 
@@ -8,7 +8,7 @@
 
 <br>
 
-## 🧩 구현 방식
+## 구현 방식
 
 - **Clipboard API 우선 사용**: 최신 브라우저 환경에서 표준 API 활용
 - **Fallback 지원**: 제한된 환경을 위한 `execCommand('copy')` 방식 구현
@@ -16,14 +16,14 @@
 
 <br>
 
-## 🛠️ 기술 스택
+## 기술 스택
 
 - HTML5
 - JavaScript (ES6+)
 
 <br>
 
-## 🚀 실행 방법
+## 실행 방법
 
 1. 프로젝트 폴더를 VS Code에서 엽니다
 2. Live Server 확장을 실행합니다
@@ -32,7 +32,7 @@
 
 <br>
 
-## 📸 실행 화면
+## 실행 화면
 
 <p align="center">
   <img src="./assets/clipboard-copy-test.png" alt="실행 화면" />
@@ -40,7 +40,7 @@
 
 <br>
 
-## 📝 참고사항
+## 참고
 
 - **HTTPS 환경**: Clipboard API는 보안 컨텍스트(HTTPS)에서 동작합니다  
 - **localhost 예외**: `http://localhost`는 보안 컨텍스트로 간주되어 Clipboard API를 사용할 수 있습니다  
